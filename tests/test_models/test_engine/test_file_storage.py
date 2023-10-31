@@ -9,6 +9,7 @@ from models.base_model import BaseModel
 from models.user import User
 from models.engine.file_storage import FileStorage
 
+
 @unittest.skipIf(
        os.getenv('HBNB_TYPE_STORAGE') == 'db',
        "This test only work in Filestorage")
@@ -68,6 +69,10 @@ class test_fileStorage(unittest.TestCase):
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
 
+    def test_reload_from_nonexistent(self):
+        """ Nothing happens if file does not exist """
+        self.assertEqual(storage.reload(), None)
+
     def test_all(self):
         """tests if all works in File Storage"""
         storage = FileStorage()
@@ -75,6 +80,13 @@ class test_fileStorage(unittest.TestCase):
         self.assertIsNotNone(obj)
         self.assertEqual(type(obj), dict)
         self.assertIs(obj, storage._FileStorage__objects)
+        
+    def test_delete(self):
+        """create object and then delete"""
+        new = BaseModel()
+        new.save()
+        storage.delete(new)
+        self.assertEqual(storage.all(), {})
 
     def test_new(self):
         """test when new is created"""
