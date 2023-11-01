@@ -117,39 +117,28 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, args):
-        try:
-            if not args:
-                raise SyntaxError("** class name missing **")
-            my_args = args.split(" ")
-
-            kwargs = {}
-            for i in range(1, len(my_args)):
-                key, value = tuple(my_args[i].split("="))
-                if value == '=':
-                    value = value.strip("").replace("_", " ")
-                elif value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1].replace("_", " ")
-                else:
-                    try:
-                        value = eval(value)
-                    except (SyntaxError, NameError):
-                        continue
-                kwargs[key] = value
-            if kwargs == {}:
-                obj = eval(my_args[0])()
-            else:
-                obj = eval(my_args[0])(**kwargs)
-                storage.new(obj)
-            print(obj.id)
-            obj.save()
-        except SyntaxError:
+        """ Create an object of any existing class,
+        This method was updated during the project """
+        split_args = args.split(" ")
+        if not args:
             print("** class name missing **")
-        except NameError:
+            return
+        elif split_args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
-
-    def help_create(self):
-        print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+            return
+        new_obj = HBNBCommand.classes[split_args[0]]()
+        split_param = split_args[1:]
+        for value in split_param:
+            split = value.split("=")
+            if (split[1][0] == '"'):
+                new_obj.__dict__[
+                    split[0]] = split[1][1:-1].replace("_", " ")
+            else:
+                new_obj.__dict__[split[0]] = split[1].replace("_", " ")
+        storage.new(new_obj)
+        storage.save()
+        print(new_obj.id)
+        storage.save()
 
     def do_show(self, args):
         new = args.partition(" ")
