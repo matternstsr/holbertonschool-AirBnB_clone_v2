@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This is the base model class for AirBnB"""
-import uuid
+import uuid4
 import models
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
