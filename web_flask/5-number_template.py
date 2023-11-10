@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Display string number or template depending on the root"""
-from flask import Flask,render_template
+from flask import Flask, render_template
 app = Flask(__name__, template_folder='templates')
 
 
