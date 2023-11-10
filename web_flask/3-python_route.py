@@ -21,8 +21,9 @@ def cisnotfun(text):
     return "C {}".format(text)
 
 
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def pythonisbest(text="is cool"):
+def pythoniscool(text="is cool"):
     text = text.replace('_', ' ')
     return "Python {}".format(text)
 
