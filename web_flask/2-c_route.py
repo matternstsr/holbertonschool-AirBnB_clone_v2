@@ -15,7 +15,7 @@ def say_hnb():
 @app.route('/c/<text>', strict_slashes=False)
 def cisnotfun(text):
     text = text.replace('_', ' ')
-    return "C{}".format(text)
+    return "C {}".format(text)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
