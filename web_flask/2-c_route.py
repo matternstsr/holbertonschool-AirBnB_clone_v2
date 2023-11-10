@@ -8,9 +8,11 @@ app = Flask(__name__)
 def say_hello():
     return "Hello HBNB!"
 
+
 @app.route('/hbnb', strict_slashes=False)
 def say_hnb():
     return "HBNB"
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def cisnotfun(text):
