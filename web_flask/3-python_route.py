@@ -22,9 +22,10 @@ def cisnotfun(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-def pythoniscool(text):
+def pythonisbest(text="is cool"):
     text = text.replace('_', ' ')
     return "Python {}".format(text)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
