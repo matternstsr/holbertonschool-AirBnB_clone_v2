@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Display string depending on the root"""
+
 from flask import Flask
 app = Flask(__name__)
 
