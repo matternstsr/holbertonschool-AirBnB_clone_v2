@@ -88,7 +88,6 @@ class DBStorage:
             return structure
 
     def close(self):
-        """
-        Close session
-        """
+        """ Close session and create a new one """
         self.__session.close()
+        self.reload()
