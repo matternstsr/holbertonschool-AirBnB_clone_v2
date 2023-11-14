@@ -4,6 +4,7 @@ from models.state import State
 from models import storage
 from flask import Flask
 from flask import render_template
+import models
 
 
 app = Flask(__name__, template_folder='templates')
@@ -46,9 +47,11 @@ def even_odd_int_template(n):
     itseven = n % 2 == 0
     return render_template('6-number_odd_or_even.html', value=n, even=itseven)
 
+
 @app.route('/states_list', strict_slashes=False)
 def list_states():
-    return render_template("7-states_list.html", db=storage.all(State))
+    states = storage.all('State')
+    return render_template("7-states_list.html", states=states)
 
 
 @app.teardown_appcontext
