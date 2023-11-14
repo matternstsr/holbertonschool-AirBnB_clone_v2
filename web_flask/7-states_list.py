@@ -14,6 +14,7 @@ def states_list():
     states = sorted(stored, key=lambda state: state.name)
     return (render_template('7-states_list.html', states=states))
 
+
 @app.teardown_appcontext
 def tear_down(exception):
     storage.close()
