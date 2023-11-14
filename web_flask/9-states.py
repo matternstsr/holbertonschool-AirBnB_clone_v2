@@ -4,6 +4,7 @@
 from flask import render_template
 from flask import jsonify
 
+
 """In Flask, jsonify is a function that returns a JSON response.
 It is commonly used to convert a Python dictionary or other
 JSON-serializable object into a JSON-formatted response that
@@ -17,6 +18,7 @@ def cities_by_states():
     states = get_sorted_states()
     return render_template('9-states.html', states=states)
 
+
 @app.route('/states/<id>', methods=['GET'])
 def state_cities(id):
     """Creates sorted list of cities by name for state"""
@@ -27,18 +29,28 @@ def state_cities(id):
     else:
         return render_template('9-states.html', nf=True)
 
+
 def get_sorted_states():
     """get states from storage, sort alpha, return sorted list."""
     data = storage.all("State").values()
     return sorted(data, key=lambda state: state.name)
 
+
 def get_state_by_id(id):
     """Retrieve a state by its ID from storage."""
     return storage.get("State", id)
 
+
 def get_sorted_cities(cities):
     """Sort a list of cities alphabetically by name."""
     return sorted(cities, key=lambda city: city.name)
+
+
+@app.teardown_appcontext
+def teardown(exception):
+    """Closes storage"""
+    storage.close()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
