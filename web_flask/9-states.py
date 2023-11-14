@@ -1,56 +1,33 @@
 #!/usr/bin/python3
-"""Return string when navigating to root dir"""
+"""Starts a Flask web app"""
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template
+from models import storage
 
 app = Flask(__name__)
 
-"""In Flask, jsonify is a function that returns a JSON response.
-It is commonly used to convert a Python dictionary or other
-JSON-serializable object into a JSON-formatted response that
-can be sent to the client. This function also sets the appropriate
-Content-Type header for the response, indicating that the response
-contains JSON data."""
-
-@app.route('/cities_by_states', methods=['GET'], strict_slashes=False)
-def cities_by_states():
-    """Creates sorted list of states by name"""
-    states = get_sorted_states()
+@app.route('/states', strict_slashes=False)
+def states_list():
+    """Creates a sorted list of states by name"""
+    data = storage.all("State").values()
+    states = sorted(data, key=lambda state: state.name)
     return render_template('9-states.html', states=states)
 
-
-@app.route('/states/<id>', methods=['GET'])
+@app.route('/states/<id>')
 def state_cities(id):
-    """Creates sorted list of cities by name for state"""
-    state = get_state_by_id(id)
+    """Creates a sorted list of cities by name for a given state"""
+    state = storage.get("State", id)
     if state:
-        cities = get_sorted_cities(state.cities)
+        cities = sorted(state.cities, key=lambda city: city.name)
         return render_template('9-states.html', state=state, cities=cities)
     else:
         return render_template('9-states.html', nf=True)
 
-
-def get_sorted_states():
-    """get states from storage, sort alpha, return sorted list."""
-    data = storage.all("State").values()
-    return sorted(data, key=lambda state: state.name)
-
-
-def get_state_by_id(id):
-    """Retrieve a state by its ID from storage."""
-    return storage.get("State", id)
-
-
-def get_sorted_cities(cities):
-    """Sort a list of cities alphabetically by name."""
-    return sorted(cities, key=lambda city: city.name)
-
-
 @app.teardown_appcontext
 def teardown(exception):
-    """Closes storage"""
+    """Closes the storage connection"""
     storage.close()
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
