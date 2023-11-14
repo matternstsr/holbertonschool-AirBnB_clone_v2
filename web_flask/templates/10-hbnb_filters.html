@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="../static/images/favicon.png">
+    <link rel="stylesheet" href="../static/styles/3-header.css">
+    <link rel="stylesheet" href="../static/styles/3-footer.css">
+    <link rel="stylesheet" href="../static/styles/4-common.css">
+    <link rel="stylesheet" href="../static/styles/6-filters.css">
+</head>
+<body>
+    <header>
+        <div class="logo"></div>
+    </header>
+    <div class="container">
+        <section class="filters">
+            <button>Search</button>
+            {% macro render_list(title, items) %}
+                <div class="{{ title.lower() }}">
+                    <h3>{{ title }}</h3>
+                    <h4>&nbsp;</h4>
+                    <ul class="popover">
+                        {% for item in items %}
+                            <li>
+                                <h2>{{ item.name }}</h2>
+                                {% if title.lower() == 'states' %}
+                                    <ul>
+                                        {% for city in item.cities|sort(attribute='name') %}
+                                            <li>{{ city.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endmacro %}
+            {{ render_list("States", states) }}
+            {{ render_list("Amenities", amenities) }}
+        </section>
+    </div>
+    <footer>
+        <p>Holberton School</p>
+    </footer>
+</body>
+</html>
