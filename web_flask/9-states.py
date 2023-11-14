@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """Return string when navigating to root dir"""
 
-from flask import render_template
-from flask import jsonify
+from flask import Flask, render_template, jsonify
 
+app = Flask(__name__)
 
 """In Flask, jsonify is a function that returns a JSON response.
 It is commonly used to convert a Python dictionary or other
