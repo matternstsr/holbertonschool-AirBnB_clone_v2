@@ -37,6 +37,7 @@ def isanumber(n):
 def numbertemplate(n):
     return render_template('5-number.html', value=n)
 
+
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def even_odd_int_template(n):
     itseven = n % 2 == 0
