@@ -6,12 +6,14 @@ from models import storage
 
 app = Flask(__name__)
 
+
 @app.route('/states', strict_slashes=False)
 def states_list():
     """Creates a sorted list of states by name"""
     data = storage.all("State").values()
     states = sorted(data, key=lambda state: state.name)
     return render_template('9-states.html', states=states)
+
 
 @app.route('/states/<id>')
 def state_cities(id):
@@ -22,6 +24,7 @@ def state_cities(id):
         return render_template('9-states.html', state=state, cities=cities)
     else:
         return render_template('9-states.html', nf=True)
+
 
 @app.teardown_appcontext
 def teardown(exception):
