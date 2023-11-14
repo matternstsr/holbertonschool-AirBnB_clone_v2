@@ -8,12 +8,12 @@
         <UL>
             {% for item in db.values()| sort(attribute='name') %}
             <li>{{ item.id }}: <B>{{item.name}}</B>
-                {% endfor %}
                 <UL>
                     {% for city in item.cities| sort(attribute='name') %}
                     <li>{{ city.id}}: <B>{{ city.name }}</B></li>
                     {% endfor %}
                 </UL>
+                {% endfor %}
             </li>
         </UL>
     </BODY>
