@@ -1,34 +1,39 @@
 #!/usr/bin/python3
 """Return string when navigating to root dir"""
-from models import storage
-from flask import Flask
+
 from flask import render_template
+from flask import jsonify
 
+"""In Flask, jsonify is a function that returns a JSON response.
+It is commonly used to convert a Python dictionary or other
+JSON-serializable object into a JSON-formatted response that
+can be sent to the client. This function also sets the appropriate
+Content-Type header for the response, indicating that the response
+contains JSON data."""
 
-app = Flask(__name__, template_folder='templates')
+@app.route('/cities_by_states', methods=['GET'], strict_slashes=False)
+def cities_by_states():
+    states = get_sorted_states()
+    return render_template('9-states.html', states=states)
 
-
-@app.route('/cities_by_states', strict_slashes=False)
-def states_list():
-    data = storage.all("State").values()
-    states = sorted(data, key=lambda state: state.name)
-    return (render_template('9-states.html', states=states))
-
-
-@app.route('/states/<id>')
+@app.route('/states/<id>', methods=['GET'])
 def state_cities(id):
-    state = storage.get("State", id)
+    state = get_state_by_id(id)
     if state:
-        cities = sorted(state.cities, key=lambda city: city.name)
-        return (render_template('9-states.html', state=state, cities=cities))
+        cities = get_sorted_cities(state.cities)
+        return render_template('9-states.html', state=state, cities=cities)
     else:
         return render_template('9-states.html', nf=True)
 
+def get_sorted_states():
+    data = storage.all("State").values()
+    return sorted(data, key=lambda state: state.name)
 
-@app.teardown_appcontext
-def tear_down(error):
-    storage.close()
+def get_state_by_id(id):
+    return storage.get("State", id)
 
+def get_sorted_cities(cities):
+    return sorted(cities, key=lambda city: city.name)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
