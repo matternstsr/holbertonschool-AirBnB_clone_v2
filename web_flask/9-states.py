@@ -9,9 +9,10 @@ app = Flask(__name__, template_folder='templates')
 
 
 @app.route('/cities_by_states', strict_slashes=False)
-def list_state_cities():
-    states = storage.all('State')
-    return render_template('8-cities_by_states.html', states=states)
+def states_list():
+    data = storage.all("State").values()
+    states = sorted(data, key=lambda state: state.name)
+    return (render_template('9-states.html', states=states))
 
 
 @app.route('/states/<id>')
