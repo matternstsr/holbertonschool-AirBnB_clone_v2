@@ -15,6 +15,10 @@ def states_list():
     states = sorted(stored_states, key=lambda state: state.name)
     return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
 
+    stored_amenities = storage.all("Amenity").values()
+    amenities = sorted(stored_amenities, key=lambda amenity: amenity.name)
+    return (render_template('10-hbnb_filters.html', states=states,
+                            amenities=amenities))
 
 @app.teardown_appcontext
 def teardown(exception):
