@@ -11,12 +11,8 @@ app = Flask(__name__, template_folder='templates')
 def states_list():
     """ Creates a sorted list of states and amenities
     for rendering in the template """
-    stored_states = storage.all("State").values()
-    states = sorted(stored_states, key=lambda state: state.name)
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
-
-    stored_amenities = storage.all("Amenity").values()
-    amenities = sorted(stored_amenities, key=lambda amenity: amenity.name)
+    amenities = storage.all("Amenity")
+    states = storage.all("State")
     return (render_template('10-hbnb_filters.html', states=states,
                             amenities=amenities))
 
